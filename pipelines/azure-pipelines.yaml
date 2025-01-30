@@ -24,7 +24,7 @@ variables:
   - name: IMAGE_NAME
     value: "Think-Cube/aks-azure-devops-agents"
   - name: IMAGE_TAG
-    value: $(date:yyyyMMdd)-$(rev:.r)
+    value: $(date:yyyyMMdd).$(rev:.r)
   
 pool:
   vmImage: $(VM_IMAGE)
