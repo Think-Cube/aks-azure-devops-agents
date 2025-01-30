@@ -45,7 +45,7 @@ stages:
         repository: '$(IMAGE_NAME)'
         command: 'build'
         Dockerfile: 'docker/Dockerfile'
-        tags: '$(IMAGE_NAME):$(IMAGE_TAG)'
+        tags: '$(IMAGE_TAG)'
 
 - stage: Push
   condition: eq('${{parameters.publish_docker}}', 'true')  
@@ -66,4 +66,4 @@ stages:
         containerRegistry: 'ghcr.io'
         repository: '$(IMAGE_NAME)'
         command: 'push'
-        tags: '$(IMAGE_NAME):$(IMAGE_TAG)'
+        tags: '$(IMAGE_TAG)'
