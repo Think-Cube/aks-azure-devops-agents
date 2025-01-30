@@ -59,4 +59,3 @@ stages:
       inputs:
         command: 'push'
         tags: '$(IMAGE_NAME):$(IMAGE_TAG)'
-e 
