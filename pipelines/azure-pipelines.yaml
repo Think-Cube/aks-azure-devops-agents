@@ -24,7 +24,7 @@ variables:
   - name: IMAGE_NAME
     value: "Think-Cube/aks-azure-devops-agents"
   - name: IMAGE_TAG
-    value: $(date:yyyyMMdd).$(rev:.r)
+    value: $(date:yyyyMMdd)
   
 pool:
   vmImage: $(VM_IMAGE)
@@ -37,9 +37,10 @@ stages:
     steps:
     - task: Docker@2
       inputs:
+        repository: '$(IMAGE_NAME)'
         command: 'build'
         Dockerfile: 'docker/Dockerfile'
-        tags: '$(IMAGE_NAME):$(IMAGE_TAG)'
+        tags: '$(IMAGE_TAG)'
 
 - stage: Push
   condition: eq('${{parameters.publish_docker}}', 'true')  
