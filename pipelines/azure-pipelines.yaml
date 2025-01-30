@@ -24,7 +24,7 @@ variables:
   - name: IMAGE_NAME
     value: "ghcr.io/Think-Cube/aks-azure-devops-agents"
   - name: IMAGE_TAG
-    value: $(date:yyyyMMdd)-$(rev:.r)   
+    value: $(date:yyyyMMdd)-$(rev:.r)
   
 pool:
   vmImage: $(VM_IMAGE)
@@ -38,7 +38,7 @@ stages:
     - task: Docker@2
       inputs:
         command: 'build'
-        Dockerfile: 'Dockerfile'
+        Dockerfile: 'docker/Dockerfile'
         tags: '$(IMAGE_NAME):$(IMAGE_TAG)'
 
 - stage: Push
