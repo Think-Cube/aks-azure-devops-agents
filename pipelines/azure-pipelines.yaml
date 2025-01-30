@@ -1,4 +1,5 @@
 name: $(date:yyyyMMdd)-$(rev:.r)
+
 parameters:
 - name: publish_docker
   displayName: 'Publish Docker Container ???'
@@ -7,14 +8,17 @@ parameters:
   values:
     - true
     - false
+
 trigger:
   branches:
     include:
     - refs/heads/master
     - refs/heads/main
+
 resources:
   repositories:
     - repository: self
+
 variables:
   - group: GITHUB-PAT-TOKEN
   - name: PUBLISH_DOCKER
@@ -22,10 +26,8 @@ variables:
   - name: VM_IMAGE
     value: ubuntu-latest
   - name: IMAGE_NAME
-    value: "Think-Cube/aks-azure-devops-agents"
-  - name: IMAGE_TAG
-    value: $(date:yyyyMMdd)
-  
+    value: "think-cube/aks-azure-devops-agents"
+
 pool:
   vmImage: $(VM_IMAGE)
 
@@ -35,12 +37,15 @@ stages:
   jobs:
   - job: Build
     steps:
+    - script: echo "##vso[task.setvariable variable=IMAGE_TAG]$(date +%Y%m%d)"
+      displayName: "Set IMAGE_TAG variable"
+
     - task: Docker@2
       inputs:
         repository: '$(IMAGE_NAME)'
         command: 'build'
         Dockerfile: 'docker/Dockerfile'
-        tags: '$(IMAGE_TAG)'
+        tags: '$(IMAGE_NAME):$(IMAGE_TAG)'
 
 - stage: Push
   condition: eq('${{parameters.publish_docker}}', 'true')  
@@ -61,4 +66,4 @@ stages:
         containerRegistry: 'ghcr.io'
         repository: '$(IMAGE_NAME)'
         command: 'push'
-        tags: '$(IMAGE_TAG)'
+        tags: '$(IMAGE_NAME):$(IMAGE_TAG)'
