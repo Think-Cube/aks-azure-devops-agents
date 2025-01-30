@@ -57,5 +57,7 @@ stages:
 
     - task: Docker@2
       inputs:
+        containerRegistry: 'ghcr.io'
+        repository: '$(IMAGE_NAME)'
         command: 'push'
-        tags: '$(IMAGE_NAME):$(IMAGE_TAG)'
+        tags: '$(IMAGE_TAG)'
