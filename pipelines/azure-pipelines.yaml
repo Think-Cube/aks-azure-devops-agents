@@ -32,7 +32,8 @@ pool:
   vmImage: $(VM_IMAGE)
 
 stages:
-- stage: Build
+- stage: TestBuild
+  condition: eq('${{parameters.publish_docker}}', 'false')
   displayName: "Build Docker Image"
   jobs:
   - job: Build
@@ -47,10 +48,9 @@ stages:
         Dockerfile: 'docker/Dockerfile'
         tags: '$(IMAGE_TAG)'
 
-- stage: Push
+- stage: BuildAndPush
   condition: eq('${{parameters.publish_docker}}', 'true')  
   displayName: "Push Docker Image"
-  dependsOn: Build
   jobs:
   - job: Push
     steps:
@@ -68,5 +68,6 @@ stages:
       inputs:
         containerRegistry: 'ghcr.io'
         repository: '$(IMAGE_NAME)'
-        command: 'push'
+        command: 'buildAndPush'
+        Dockerfile: 'docker/Dockerfile'
         tags: '$(IMAGE_TAG)'
