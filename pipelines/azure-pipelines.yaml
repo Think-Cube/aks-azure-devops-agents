@@ -54,7 +54,7 @@ stages:
   jobs:
   - job: Push
     steps:
-    - checkout: none
+    - checkout: self
     - script: echo "##vso[task.setvariable variable=IMAGE_TAG]$(date +%Y%m%d)"
       displayName: "Set IMAGE_TAG variable"    
     - task: Docker@2
