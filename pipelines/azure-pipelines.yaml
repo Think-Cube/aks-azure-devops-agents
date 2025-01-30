@@ -1,0 +1,62 @@
+name: $(date:yyyyMMdd)-$(rev:.r)
+parameters:
+- name: publish_docker
+  displayName: 'Publish Docker Container ???'
+  type: string
+  default: 'false'
+  values:
+    - true
+    - false
+trigger:
+  branches:
+    include:
+    - refs/heads/master
+    - refs/heads/main
+resources:
+  repositories:
+    - repository: self
+variables:
+  - group: GITHUB-PAT-TOKEN
+  - name: PUBLISH_DOCKER
+    value: ${{parameters.publish_docker}}
+  - name: VM_IMAGE
+    value: ubuntu-latest
+  - name: IMAGE_NAME
+    value: "ghcr.io/Think-Cube/aks-azure-devops-agents"
+  - name: IMAGE_TAG
+    value: $(date:yyyyMMdd)-$(rev:.r)   
+  
+pool:
+  vmImage: $(VM_IMAGE)
+
+stages:
+- stage: Build
+  displayName: "Build Docker Image"
+  jobs:
+  - job: Build
+    steps:
+    - task: Docker@2
+      inputs:
+        command: 'build'
+        Dockerfile: 'Dockerfile'
+        tags: '$(IMAGE_NAME):$(IMAGE_TAG)'
+
+- stage: Push
+  condition: eq('${{parameters.publish_docker}}', 'true')  
+  displayName: "Push Docker Image"
+  dependsOn: Build
+  jobs:
+  - job: Push
+    steps:
+    - task: Docker@2
+      inputs:
+        command: 'login'
+        containerRegistry: 'ghcr.io'
+        username: '$(USERNAME)'
+        password: '$(TOKEN)'
+
+    - task: Docker@2
+      inputs:
+        command: 'push'
+        tags: '$(IMAGE_NAME):$(IMAGE_TAG)'
+e 
