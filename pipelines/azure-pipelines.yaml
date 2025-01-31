@@ -62,7 +62,7 @@ stages:
         command: 'login'
         containerRegistry: 'ghcr.io'
         username: '$(USERNAME)'
-        password: '$(TOKEN)'
+        password: '$(TOKEN-FOR-GHCR)'
 
     - task: Docker@2
       inputs:
