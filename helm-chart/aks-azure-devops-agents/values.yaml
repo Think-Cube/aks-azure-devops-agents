@@ -1,0 +1,41 @@
+# Default values for azdevops-agent
+
+# Number of replicas (instances) of the Azure DevOps agent to run
+replicaCount: 1
+
+image:
+  # The repository containing the Docker image for the Azure DevOps agent
+  repository: 0621f85b.azurecr.io/keda-devops-agents
+  # The specific tag of the image to use. This ensures consistency across deployments.
+  tag: 1364
+  # The policy that defines when Kubernetes pulls the Docker image:
+  # - IfNotPresent: Pull the image only if it's not already available locally.
+  # - Always: Always pull the image, even if a local copy exists.
+  # - Never: Never pull the image and rely on a local copy.
+  pullPolicy: IfNotPresent
+
+azp:
+  # The URL of the Azure DevOps organization where the agent will register
+  url: "https://dev.azure.com/Test-Lab"
+  # The name of the agent pool where this agent should register
+  pool: "Keda-Devops-Agent"
+  # The Personal Access Token (PAT) used to authenticate the agent with Azure DevOps.
+  # It should be Base64-encoded for secure storage.
+  token: "UEBzc3cwcmRfMTIz" # Base64 encoded token
+
+# The host path where the Docker socket is mounted.
+# This allows the agent to interact with the Docker daemon on the host machine.
+dockerVolumePath: "/var/run/docker.sock"
+
+scaledObject:
+  # The minimum number of replicas the system should maintain, even during low activity
+  minReplicaCount: 1
+  # The maximum number of replicas that can be created during high activity
+  maxReplicaCount: 5
+  # The ID of the Azure DevOps agent pool to scale. This is specific to the pool used in Azure DevOps.
+  poolID: "12"
+
+triggerAuthentication:
+  # The name of the KEDA TriggerAuthentication resource used for authentication
+  # with the Azure DevOps pipelines. It references the secret containing the PAT.
+  name: pipeline-trigger-auth

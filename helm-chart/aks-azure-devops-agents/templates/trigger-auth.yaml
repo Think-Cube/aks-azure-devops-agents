@@ -1,0 +1,9 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: {{ .Values.triggerAuthentication.name }}
+spec:
+  secretTargetRef:
+    - parameter: personalAccessToken
+      name: azdevops
+      key: AZP_TOKEN
