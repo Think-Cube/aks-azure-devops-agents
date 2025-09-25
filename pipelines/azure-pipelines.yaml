@@ -26,7 +26,7 @@ variables:
   - name: VM_IMAGE
     value: ubuntu-latest
   - name: IMAGE_NAME
-    value: "think-cube/aks-azure-devops-agents"
+    value: "thinkcubedev/aks-azure-devops-agents"
 
 pool:
   vmImage: $(VM_IMAGE)
