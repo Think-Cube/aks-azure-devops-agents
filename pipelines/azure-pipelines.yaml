@@ -56,17 +56,11 @@ stages:
     steps:
     - checkout: self
     - script: echo "##vso[task.setvariable variable=IMAGE_TAG]$(date +%Y%m%d)"
-      displayName: "Set IMAGE_TAG variable"    
-    - task: Docker@2
-      inputs:
-        command: 'login'
-        containerRegistry: 'ghcr.io'
-        username: '$(USERNAME)'
-        password: '$(TOKEN-FOR-GHCR)'
+      displayName: "Set IMAGE_TAG variable"
 
     - task: Docker@2
       inputs:
-        containerRegistry: 'ghcr.io'
+        containerRegistry: 'DockerHub_thinkcubedev'
         repository: '$(IMAGE_NAME)'
         command: 'buildAndPush'
         Dockerfile: 'docker/Dockerfile'
