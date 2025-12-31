@@ -1,10 +1,10 @@
-FROM ubuntu:22.04
+FROM ubuntu:questing-20251007
 ENV TARGETARCH="linux-x64"
 # Also can be "linux-arm", "linux-arm64".
 
 RUN apt update
 RUN apt upgrade -y
-RUN apt install -y curl git jq libicu70
+RUN apt install -y curl git jq libicu-dev
 
 WORKDIR /azp/
 
