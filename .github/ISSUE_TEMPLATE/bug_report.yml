@@ -1,0 +1,54 @@
+name: Bug Report
+description: Report a bug or misconfiguration
+title: "Bug: "
+labels: ["bug", "triage"]
+body:
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - Dockerfile
+        - Helm chart (deployment.yaml)
+        - Helm chart (scaledobject.yaml)
+        - Helm chart (secret.yaml)
+        - Helm chart (trigger-auth.yaml)
+        - values.yaml
+        - start.sh
+        - Azure Pipelines pipeline
+        - Documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. helm install ...
+        2. kubectl get pods ...
+        3. Error seen: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: Environment
+      placeholder: "AKS version, KEDA version, Helm version"
+    validations:
+      required: false
