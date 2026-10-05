@@ -2,7 +2,7 @@ name: $(date:yyyyMMdd)-$(rev:.r)
 
 parameters:
 - name: publish_docker
-  displayName: 'Publish Docker Container ???'
+  displayName: 'Publish Docker Image'
   type: string
   default: 'false'
   values:
@@ -12,8 +12,7 @@ parameters:
 trigger:
   branches:
     include:
-    - refs/heads/master
-    - refs/heads/main
+    - main
 
 resources:
   repositories:
@@ -49,7 +48,7 @@ stages:
         tags: '$(IMAGE_TAG)'
 
 - stage: BuildAndPush
-  condition: eq('${{parameters.publish_docker}}', 'true')  
+  condition: eq('${{parameters.publish_docker}}', 'true')
   displayName: "Push Docker Image"
   jobs:
   - job: Push

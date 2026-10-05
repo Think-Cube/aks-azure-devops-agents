@@ -5,9 +5,10 @@ replicaCount: 1
 
 image:
   # The repository containing the Docker image for the Azure DevOps agent
-  repository: 0621f85b.azurecr.io/keda-devops-agents
+  # Replace with your own ACR or Docker Hub image path
+  repository: <your-acr>.azurecr.io/aks-azure-devops-agents
   # The specific tag of the image to use. This ensures consistency across deployments.
-  tag: 1364
+  tag: latest
   # The policy that defines when Kubernetes pulls the Docker image:
   # - IfNotPresent: Pull the image only if it's not already available locally.
   # - Always: Always pull the image, even if a local copy exists.
@@ -16,12 +17,13 @@ image:
 
 azp:
   # The URL of the Azure DevOps organization where the agent will register
-  url: "https://dev.azure.com/Test-Lab"
+  url: "https://dev.azure.com/<your-org>"
   # The name of the agent pool where this agent should register
-  pool: "Keda-Devops-Agent"
+  pool: "<your-agent-pool>"
   # The Personal Access Token (PAT) used to authenticate the agent with Azure DevOps.
-  # It should be Base64-encoded for secure storage.
-  token: "UEBzc3cwcmRfMTIz" # Base64 encoded token
+  # Must be Base64-encoded. Generate with: echo -n "<your-pat>" | base64
+  # Recommended: inject via CI/CD pipeline or external secret manager (e.g. Azure Key Vault + ESO)
+  token: ""
 
 # The host path where the Docker socket is mounted.
 # This allows the agent to interact with the Docker daemon on the host machine.
@@ -32,8 +34,9 @@ scaledObject:
   minReplicaCount: 1
   # The maximum number of replicas that can be created during high activity
   maxReplicaCount: 5
-  # The ID of the Azure DevOps agent pool to scale. This is specific to the pool used in Azure DevOps.
-  poolID: "12"
+  # The numeric ID of the Azure DevOps agent pool to scale.
+  # Find it in: Organization Settings > Agent pools > select pool > check URL for poolId parameter
+  poolID: "<your-pool-id>"
 
 triggerAuthentication:
   # The name of the KEDA TriggerAuthentication resource used for authentication
